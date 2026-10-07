@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1220">
+  <title>Subdomain Finder — CRT.name</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080e1b;
+      --panel: rgba(17, 27, 46, .88);
+      --panel-2: #111d31;
+      --line: rgba(148, 163, 184, .16);
+      --muted: #91a0b8;
+      --text: #edf4ff;
+      --accent: #64d8ff;
+      --accent-2: #7c8cff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(ellipse at 15% 10%, rgba(56, 189, 248, .14), transparent 34%),
+        radial-gradient(ellipse at 88% 78%, rgba(124, 140, 255, .13), transparent 36%),
+        var(--bg);
+      display: flex; flex-direction: column;
+    }
+    .topbar {
+      width: min(1120px, calc(100% - 40px)); margin: 0 auto;
+      height: 76px; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 750; letter-spacing: -.3px; }
+    .brand-mark {
+      width: 36px; height: 36px; display: grid; place-items: center; border-radius: 11px;
+      color: #07111f; background: linear-gradient(135deg, var(--accent), #9af0d0);
+      box-shadow: 0 5px 24px rgba(100, 216, 255, .18);
+    }
+    .brand small { display: block; color: var(--muted); font-size: 10px; font-weight: 600; letter-spacing: 1.5px; margin-top: 2px; }
+    .status { color: #a9bad1; font-size: 12px; display: flex; align-items: center; gap: 8px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 12px #4ade80; }
+    main { width: min(900px, calc(100% - 40px)); margin: auto; padding: 76px 0 86px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; padding: 7px 11px;
+      border: 1px solid rgba(100,216,255,.22); border-radius: 999px;
+      color: #a9eaff; background: rgba(100,216,255,.07);
+      text-transform: uppercase; letter-spacing: 1.25px; font-size: 10px; font-weight: 750;
+    }
+    h1 { font-size: clamp(36px, 6vw, 58px); line-height: 1.05; letter-spacing: -2.5px; margin: 22px 0 17px; }
+    h1 span { background: linear-gradient(90deg, var(--accent), #a9b3ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .intro { max-width: 620px; color: var(--muted); font-size: 16px; line-height: 1.75; margin: 0; }
+    .search-card {
+      margin-top: 38px; padding: 25px; border: 1px solid var(--line); border-radius: 20px;
+      background: var(--panel); box-shadow: 0 24px 80px rgba(0,0,0,.28);
+      backdrop-filter: blur(16px);
+    }
+    .field-label { display: block; font-size: 13px; color: #d6e2f3; font-weight: 650; margin: 0 0 11px 2px; }
+    .input-row { display: flex; gap: 10px; }
+    input {
+      min-width: 0; flex: 1; height: 56px; padding: 0 17px; border-radius: 11px;
+      border: 1px solid #34445f; outline: none; background: #0a1425; color: var(--text);
+      font: inherit; font-size: 15px; transition: border-color .2s, box-shadow .2s;
+    }
+    input::placeholder { color: #667791; }
+    input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(100,216,255,.12); }
+    button {
+      height: 56px; padding: 0 23px; border: 0; border-radius: 11px; cursor: pointer;
+      color: #07111f; font: inherit; font-weight: 750; white-space: nowrap;
+      background: linear-gradient(110deg, var(--accent), #9be9d0);
+      box-shadow: 0 8px 25px rgba(100,216,255,.16); transition: transform .18s, filter .18s;
+    }
+    button:hover { transform: translateY(-1px); filter: brightness(1.06); }
+    button:active { transform: translateY(0); }
+    .hint { color: #8191aa; font-size: 12px; margin: 12px 2px 0; }
+    .hint code { color: #c6d7ed; background: rgba(148,163,184,.1); padding: 3px 6px; border-radius: 5px; }
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 22px; }
+    .feature {
+      border: 1px solid var(--line); background: rgba(17,27,46,.58); border-radius: 14px;
+      padding: 17px;
+    }
+    .feature-icon { font-size: 18px; margin-bottom: 12px; }
+    .feature strong { display: block; font-size: 13px; margin-bottom: 5px; }
+    .feature p { color: var(--muted); font-size: 12px; line-height: 1.55; margin: 0; }
+    .notice {
+      margin-top: 22px; padding: 14px 16px; border-radius: 12px;
+      background: rgba(124,140,255,.07); border: 1px solid rgba(124,140,255,.16);
+      color: #aab8d1; font-size: 12px; line-height: 1.65;
+    }
+    footer {
+      width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: 20px 0 25px;
+      border-top: 1px solid var(--line); color: #71819a; font-size: 11px;
+      display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    }
+    footer a { color: #9ccfe3; text-decoration: none; }
+    @media (max-width: 620px) {
+      .topbar { height: 66px; }
+      main { padding: 58px 0 65px; }
+      .status { font-size: 0; }
+      .search-card { padding: 18px; }
+      .input-row { flex-direction: column; }
+      button { width: 100%; }
+      .features { grid-template-columns: 1fr; }
+      .feature { display: flex; gap: 13px; align-items: flex-start; }
+      .feature-icon { margin: 0; }
+      footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">⌕</div>
+      <div>CRT Finder<small>DOMAIN INTELLIGENCE</small></div>
+    </div>
+    <div class="status"><span class="dot"></span> Certificate Transparency Search</div>
+  </header>
+
+  <main>
+    <div class="eyebrow"><span>✦</span> Subdomain discovery</div>
+    <h1>Explore your domain's<br><span>subdomain footprint.</span></h1>
+    <p class="intro">
+      Search publicly logged Certificate Transparency records to discover hostnames
+      associated with a domain. Enter a root domain to begin.
+    </p>
+
+    <section class="search-card" aria-label="Subdomain search">
+      <form action="https://crt.name/v1/search" method="GET" target="_blank" rel="noopener">
+        <label class="field-label" for="apex">Target domain</label>
+        <div class="input-row">
+          <input id="apex" type="text" name="apex" placeholder="example.com"
+                 autocomplete="off" autocapitalize="none" spellcheck="false" required
+                 pattern="(?=.{1,253}$)(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,63}"
+                 title="Enter a valid domain, such as example.com">
+          <button type="submit">Search subdomains <span aria-hidden="true">↗</span></button>
+        </div>
+        <p class="hint">Example: <code>example.com</code> · Results open in a new tab from crt.name.</p>
+      </form>
+    </section>
+
+    <section class="features" aria-label="How it works">
+      <article class="feature">
+        <div class="feature-icon">⌕</div>
+        <div><strong>Simple domain search</strong><p>Enter a root domain—no protocol or path required.</p></div>
+      </article>
+      <article class="feature">
+        <div class="feature-icon">◈</div>
+        <div><strong>Public CT records</strong><p>Uses Certificate Transparency data provided by crt.name.</p></div>
+      </article>
+      <article class="feature">
+        <div class="feature-icon">↗</div>
+        <div><strong>Quick results</strong><p>Opens the search response directly in a separate tab.</p></div>
+      </article>
+    </section>
+
+    <div class="notice">
+      <strong>Note:</strong> Certificate Transparency records are public certificate data, not a complete
+      DNS inventory. Some hostnames may be missing or no longer active. Only investigate domains you own
+      or are authorized to assess.
+    </div>
+  </main>
+
+  <footer>
+    <span>© 2026 CRT Finder · Independent interface</span>
+    <span>Data service: <a href="https://crt.name/" target="_blank" rel="noopener">crt.name</a></span>
+  </footer>
+</body>
+</html>

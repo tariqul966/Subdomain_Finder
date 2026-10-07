@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subdomain Search</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f7fa;
+      color: #222;
+    }
+    .card {
+      width: 100%;
+      max-width: 520px;
+      padding: 34px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      box-shadow: 0 8px 28px rgba(15, 23, 42, .06);
+    }
+    h1 {
+      margin: 0 0 9px;
+      text-align: center;
+      font-size: 25px;
+      font-weight: 700;
+    }
+    .subtitle {
+      margin: 0 0 28px;
+      color: #6b7280;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    label {
+      display: block;
+      margin-bottom: 9px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .form-row {
+      display: flex;
+      gap: 9px;
+    }
+    input {
+      flex: 1;
+      min-width: 0;
+      height: 44px;
+      padding: 0 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      outline: none;
+      font-size: 14px;
+    }
+    input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .10);
+    }
+    button {
+      height: 44px;
+      padding: 0 18px;
+      border: 0;
+      border-radius: 6px;
+      background: #2563eb;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: #1d4ed8; }
+    .help {
+      margin: 11px 0 0;
+      color: #6b7280;
+      font-size: 12px;
+    }
+    .footer {
+      margin-top: 25px;
+      padding-top: 16px;
+      border-top: 1px solid #eee;
+      text-align: center;
+      color: #9ca3af;
+      font-size: 12px;
+    }
+    @media (max-width: 480px) {
+      .card { padding: 25px 20px; }
+      .form-row { flex-direction: column; }
+      button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Subdomain Search</h1>
+    <p class="subtitle">Find publicly logged subdomains for a domain.</p>
+
+    <form action="https://crt.name/v1/search" method="GET" target="_blank" rel="noopener">
+      <label for="apex">Domain name</label>
+      <div class="form-row">
+        <input
+          id="apex"
+          type="text"
+          name="apex"
+          placeholder="example.com"
+          autocomplete="off"
+          autocapitalize="none"
+          spellcheck="false"
+          required
+          pattern="(?=.{1,253}$)(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,63}"
+          title="Enter a valid domain, such as example.com"
+        >
+        <button type="submit">Search</button>
+      </div>
+      <!--<p class="help">Example: example.com</p>-->
+    </form>
+
+    <div class="footer">Powered by <a href="https://crt.name/" target="_blank" rel="noopener">crt.name</a></div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subdomain Search in Iframe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .search-box {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 320px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Sub-domain Search</h2>
+    
+    <div class="search-box">
+        <input type="text" id="domainInput" placeholder="Enter domain (e.g. rionus.top)">
+        <button onclick="searchDomain()">Search</button>
+    </div>
+
+    <!-- Iframe Container -->
+    <iframe id="crtIframe" src="about:blank"></iframe>
+
+    <script>
+        function searchDomain() {
+            let domain = document.getElementById('domainInput').value.trim();
+            
+            if (domain) {
+                // protocol, http/https বা www থাকলে তা রিমুভ করা
+                domain = domain.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "");
+                
+                // Target URL তৈরি
+                const targetUrl = `https://crt.name/v1/search?apex=${encodeURIComponent(domain)}`;
+                
+                // Iframe-এ URL সেট করা
+                document.getElementById('crtIframe').src = targetUrl;
+            } else {
+                alert('অনুগ্রহ করে একটি ডোমেইন ইনপুট দিন।');
+            }
+        }
+
+        // Enter কী প্রেস করলে সার্চ হবে
+        document.getElementById('domainInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                searchDomain();
+            }
+        });
+    </script>
+
+</body>
+</html>
